@@ -1,4 +1,4 @@
-// Data JSON (hardcoded dari input user)
+// Data JSON (hardcoded dari input user - lengkap)
 const data = {
   "variabel": {
     "definisi": "Tempat menyimpan data sementara selama program berjalan.",
@@ -72,6 +72,11 @@ const data = {
 // Daftar topik utama
 const topics = Object.keys(data);
 
+// Generate sidebar saat halaman load
+document.addEventListener('DOMContentLoaded', function() {
+    generateSidebar();
+});
+
 // Generate sidebar
 function generateSidebar() {
     const topicList = document.getElementById('topicList');
@@ -80,33 +85,12 @@ function generateSidebar() {
         const a = document.createElement('a');
         a.href = '#';
         a.textContent = topic.replace(/_/g, ' ').toUpperCase();
-        a.onclick = () => showTopic(topic);
+        a.onclick = function(e) {
+            e.preventDefault();
+            showTopic(topic);
+            // Update active class di sidebar
+            document.querySelectorAll('.sidebar a').forEach(link => link.classList.remove('active'));
+            a.classList.add('active');
+        };
         li.appendChild(a);
-        topicList.appendChild(li);
-    });
-}
-
-// Toggle sidebar untuk mobile
-function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    sidebar.classList.toggle('open');
-}
-
-// Show topic content
-function showTopic(topic) {
-    const contentArea = document.getElementById('contentArea');
-    const topicData = data[topic];
-    
-    // Hide all contents
-    document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
-    
-    // Check if it's a simple topic (has 'definisi' and 'contoh') or complex (sub-topics)
-    const hasSubTopics = Object.keys(topicData).some(key => 
-        typeof topicData[key] === 'object' && key !== 'definisi' && key !== 'contoh' && !key.startsWith('Python') && !key.startsWith('Java') && !key.startsWith('JavaScript')
-    );
-    
-    let html = `
-        <div class="content active" id="content-${topic}">
-            <h2>${topic.replace(/_/g, ' ').toUpperCase()}</h2>
-            <div class="tabs">
-                <button class="tab-button active" onclick="switchTab('${topic}', 'Python')">Python</button>
+        topicList.append
