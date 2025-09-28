@@ -69,7 +69,7 @@ const kamus = {
   }    
 };
 
-// Buat tampilan sidebar
+// Sidebar
 const termsDiv = document.getElementById("terms");
 Object.keys(kamus).sort().forEach(kategori => {
     const catDiv = document.createElement("div");
@@ -87,10 +87,10 @@ Object.keys(kamus).sort().forEach(kategori => {
     });
 });
 
-// Fungsi menampilkan detail
+// Menampilkan detail
 function showDetails(kategori, item) {
     const detailsDiv = document.getElementById("details");
-    const data = kamus[kategori][item] || kamus[item]; // fallback ke item utama
+    const data = kamus[kategori][item] || kamus[item];
     if(!data) return;
 
     let html = `<h3>${item}</h3>`;
