@@ -80,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Generate sidebar
 function generateSidebar() {
     const topicList = document.getElementById('topicList');
+    topicList.innerHTML = ''; // Clear existing
     topics.forEach(topic => {
         const li = document.createElement('li');
         const a = document.createElement('a');
@@ -93,4 +94,135 @@ function generateSidebar() {
             a.classList.add('active');
         };
         li.appendChild(a);
-        topicList.append
+        topicList.appendChild(li);
+    });
+}
+
+// Toggle sidebar untuk mobile
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('open');
+}
+
+// Show topic content
+function showTopic(topic) {
+    const contentArea = document.getElementById('contentArea');
+    const topicData = data[topic];
+    
+    // Hide all contents
+    document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+    
+    // Check if it's a simple topic (has 'definisi' and 'contoh') or complex (sub-topics)
+    const hasSubTopics = Object.keys(topicData).length > 2 && !topicData.hasOwnProperty('contoh'); // Simple if has 'contoh', else complex
+    
+    let html = `
+        <div class="content active" id="content-${topic}">
+            <h2>${topic.replace(/_/g, ' ').toUpperCase()}</h2>
+            <div class="tabs">
+                <button class="tab-button active" data-topic="${topic}" data-lang="Python">Python</button>
+                <button class="tab-button" data-topic="${topic}" data-lang="Java">Java</button>
+                <button class="tab-button" data-topic="${topic}" data-lang="JavaScript">JavaScript</button>
+            </div>
+            <div id="tabContent-${topic}">
+    `;
+    
+    if (!hasSubTopics) {
+        // Simple topic: Definisi umum + contoh per bahasa
+        html += `
+                <div class="tab-content active">
+                    <p class="definisi">${topicData.definisi || ''}</p>
+                    <div class="contoh">${topicData.contoh ? topicData.contoh.Python || 'Tidak tersedia' : ''}</div>
+                </div>
+                <div class="tab-content">
+                    <p class="definisi">${topicData.definisi || ''}</p>
+                    <div class="contoh">${topicData.contoh ? topicData.contoh.Java || 'Tidak tersedia' : ''}</div>
+                </div>
+                <div class="tab-content">
+                    <p class="definisi">${topicData.definisi || ''}</p>
+                    <div class="contoh">${topicData.contoh ? topicData.contoh.JavaScript || 'Tidak tersedia' : ''}</div>
+                </div>
+        `;
+    } else {
+        // Complex topic: Loop sub-topics as accordion
+        Object.keys(topicData).forEach(subKey => {
+            const subData = topicData[subKey];
+            if (typeof subData === 'object' && subData.definisi) {
+                html += `
+                    <div class="accordion">
+                        <div class="accordion-header" onclick="toggleAccordion('accordion-${topic}-${subKey}')">${subKey.replace(/_/g, ' ').toUpperCase()}</div>
+                        <div class="accordion-body" id="accordion-${topic}-${subKey}">
+                            <div class="tabs">
+                                <button class="tab-button active" data-topic="${topic}" data-sub="${subKey}" data-lang="Python">Python</button>
+                                <button class="tab-button" data-topic="${topic}" data-sub="${subKey}" data-lang="Java">Java</button>
+                                <button class="tab-button" data-topic="${topic}" data-sub="${subKey}" data-lang="JavaScript">JavaScript</button>
+                            </div>
+                            <div id="subTabContent-${topic}-${subKey}">
+                                <div class="tab-content active">
+                                    <p class="definisi">${subData.definisi}</p>
+                                    <div class="contoh">${subData.Python || 'Tidak tersedia'}</div>
+                                </div>
+                                <div class="tab-content">
+                                    <p class="definisi">${subData.definisi}</p>
+                                    <div class="contoh">${subData.Java || 'Tidak tersedia'}</div>
+                                </div>
+                                <div class="tab-content">
+                                    <p class="definisi">${subData.definisi}</p>
+                                    <div class="contoh">${subData.JavaScript || 'Tidak tersedia'}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+    }
+    
+    html += `
+            </div>
+        </div>
+    `;
+    
+    contentArea.innerHTML = html;
+    
+    // Add event listeners for tabs (delegation)
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('tab-button')) {
+            const topic = e.target.dataset.topic;
+            const sub = e.target.dataset.sub;
+            const lang = e.target.dataset.lang;
+            
+            // Update active tab button
+            e.target.parentElement.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('active');
+            
+            // Update active tab content
+            let tabContents;
+            if (sub) {
+                tabContents = document.querySelectorAll(`#subTabContent-${topic}-${sub} .tab-content`);
+            } else {
+                tabContents = document.querySelectorAll(`#tabContent-${topic} .tab-content`);
+            }
+            tabContents.forEach((tc, index) => {
+                tc.classList.toggle('active', index === ['Python', 'Java', 'JavaScript'].indexOf(lang));
+            });
+        }
+    });
+    
+    // Add event listeners for accordions if complex
+    if (hasSubTopics) {
+        Object.keys(topicData).forEach(subKey => {
+            // Already handled by onclick in HTML
+        });
+    }
+}
+
+// Toggle accordion
+function toggleAccordion(id) {
+    const body = document.getElementById(id);
+    body.classList.toggle('active');
+}
+
+// Initial load: Show first topic if needed
+if (topics.length > 0) {
+    showTopic(topics[0]);
+}
