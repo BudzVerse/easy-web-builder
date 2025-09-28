@@ -1,195 +1,29 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Konsep Pemrograman: Python vs Java vs JavaScript</title>
-    <style>
-        /* CSS Styling */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-            line-height: 1.6;
-        }
-        .container {
-            display: flex;
-            min-height: 100vh;
-        }
-        /* Sidebar */
-        .sidebar {
-            width: 250px;
-            background: #2c3e50;
-            color: white;
-            padding: 20px;
-            position: fixed;
-            height: 100%;
-            overflow-y: auto;
-            transition: transform 0.3s ease;
-        }
-        .sidebar h2 {
-            margin-bottom: 20px;
-            color: #ecf0f1;
-        }
-        .sidebar ul {
-            list-style: none;
-        }
-        .sidebar li {
-            margin-bottom: 10px;
-        }
-        .sidebar a {
-            color: #bdc3c7;
-            text-decoration: none;
-            display: block;
-            padding: 10px;
-            border-radius: 5px;
-            transition: background 0.3s;
-        }
-        .sidebar a:hover, .sidebar a.active {
-            background: #34495e;
-            color: white;
-        }
-        /* Main Content */
-        .main {
-            margin-left: 250px;
-            flex: 1;
-            padding: 20px;
-        }
-        .header {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-        .content {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            display: none; /* Hidden by default */
-        }
-        .content.active {
-            display: block;
-        }
-        /* Tabs */
-        .tabs {
-            display: flex;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #ddd;
-        }
-        .tab-button {
-            background: #f1f1f1;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        .tab-button.active {
-            background: #3498db;
-            color: white;
-        }
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
-        /* Accordion for Sub-topics */
-        .accordion {
-            background: #f9f9f9;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        .accordion-header {
-            background: #34495e;
-            color: white;
-            padding: 15px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .accordion-header:hover {
-            background: #2c3e50;
-        }
-        .accordion-body {
-            padding: 15px;
-            display: none;
-            background: white;
-        }
-        .accordion-body.active {
-            display: block;
-        }
-        .definisi {
-            font-style: italic;
-            color: #555;
-            margin-bottom: 10px;
-        }
-        .contoh {
-            background: #e8f4fd;
-            padding: 10px;
-            border-left: 4px solid #3498db;
-            margin: 10px 0;
-            font-family: 'Courier New', monospace;
-        }
-        /* Mobile Responsif */
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-            .sidebar.open {
-                transform: translateX(0);
-            }
-            .main {
-                margin-left: 0;
-            }
-            .toggle-btn {
-                display: block;
-                position: fixed;
-                top: 10px;
-                left: 10px;
-                z-index: 1000;
-                background: #2c3e50;
-                color: white;
-                border: none;
-                padding: 10px;
-                cursor: pointer;
-                border-radius: 5px;
-            }
-        }
-        .toggle-btn {
-            display: none;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Konsep Pemrograman: Python vs Java vs JavaScript</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <button class="toggle-btn" onclick="toggleSidebar()">☰ Menu</button>
-    
-    <div class="container">
-        <nav class="sidebar" id="sidebar">
-            <h2>Topik Pemrograman</h2>
-            <ul id="topicList">
-                <!-- Daftar topik akan di-generate oleh JS -->
-            </ul>
-        </nav>
-        
-        <main class="main">
-            <div class="header">
-                <h1>Konsep Pemrograman Dasar</h1>
-                <p>Perbandingan sintaks dan konsep di Python, Java, dan JavaScript. Pilih topik dari sidebar untuk memulai.</p>
-            </div>
-            
-            <div id="contentArea">
-                <!-- Konten akan di-generate oleh JS -->
-            </div>
-        </main>
-    </div>
+<button class="toggle-btn" onclick="toggleSidebar()">☰ Menu</button>
 
-    <script src="script.js"></script>
+<div class="container">
+    <nav class="sidebar" id="sidebar">
+        <h2>Topik Pemrograman</h2>
+        <ul id="topicList"></ul>
+    </nav>
+
+    <main class="main">
+        <div class="header">
+            <h1>Konsep Pemrograman Dasar</h1>
+            <p>Pilih topik dari sidebar untuk melihat definisi & contoh di Python, Java, dan JavaScript.</p>
+        </div>
+        <div id="contentArea"></div>
+    </main>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
